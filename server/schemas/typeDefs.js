@@ -6,6 +6,7 @@ const { gql } = require('apollo-server-express');
 // create our typeDefs - this is a tagged template function , an ES6 feature
 // Here we are defining a query using type Query { ... } inside this is the types of our queries and what data we expect them to return
 // We can also define custom types, like we have done for the Thought type. ID counts as a unique string
+// The ! mark means that the provided parameter MUST exist for GraphQL to carry out the query
 const typeDefs = gql`
     type Thought {
         _id: ID
@@ -22,9 +23,21 @@ const typeDefs = gql`
         createdAt: String
         username: String
     }
-    
+
+    type User {
+        _id: ID
+        username: String
+        email: String
+        friendCount: Int
+        thoughts: [Thought]
+        friends: [User]
+    }
+
     type Query {
+        users: [User]
+        user(username: String!) : User
         thoughts(username: String): [Thought]
+        thought(_id:ID!): Thought
     }
 `;
 
