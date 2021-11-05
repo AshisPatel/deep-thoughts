@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('./config/connection');
 const { typeDefs, resolvers } = require('./schemas');
 const { ApolloServer } = require('apollo-server-express');
+const { authMiddleware } = require('./utils/auth');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -12,7 +13,9 @@ const startApolloServer = async () => {
   const server = new ApolloServer({
       typeDefs,
       resolvers,
-      // context: authMiddleware
+      // passing in context to pass headers for the JWT request in the me query
+      // Grabs the request information and only returns the headers key
+      context: authMiddleware
   });
 
   // Start the Apollo Server
