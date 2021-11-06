@@ -22,5 +22,6 @@
   "homepage": "https://github.com/AshisPatel/deep-thoughts#readme",
   "devDependencies": {
     "concurrently": "^6.3.0"
-  }
+  },
+  "dependencies": {}
 }
