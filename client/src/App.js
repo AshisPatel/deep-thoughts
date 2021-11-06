@@ -1,5 +1,6 @@
 import React from 'react';
 import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -15,9 +16,20 @@ import Home from './pages/Home';
 const httpLink = createHttpLink({
   uri: '/graphql'
 });
+// create an authentication path to valide whether or not a token exists on all API requests
+// the _ allows us to set a placeholder for the first parameter, which we do not need access to (it holds the current request parameter) so that we can get to the second, which we do need. 
+const authLink = setContext((_,{ headers }) => {
+  const token = localStorage.getItem('id_token');
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : ''
+    }
+  };
+});
 // creates the connection to the API endpoint
 const client = new ApolloClient({
-  link: httpLink,
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache()
 });
 

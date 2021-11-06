@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
+import Auth from "../utils/auth";
 
 const Login = (props) => {
   const [formState, setFormState] = useState({ email: '', password: '' });
@@ -26,8 +27,10 @@ const Login = (props) => {
         variables: { ...formState }
       }); 
       console.log(data);
-    } catch (e) {
-      console.error(e);
+       // call Auth object and use login method to store the token to localStorage
+       Auth.login(data.login.token);
+    } catch (err) {
+      console.error(err);
     }
 
     // clear form values
