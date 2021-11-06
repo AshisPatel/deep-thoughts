@@ -2,14 +2,18 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_THOUGHT } from "../utils/queries";
+import Auth from "../utils/auth";
 
 import ReactionList from '../components/ReactionList';
+import ReactionForm from "../components/ReactionForm";
 
 const SingleThought = props => {
 
   // the :id parameter is passed in from the Route for SingleThought and thus, we grab it from the useParams hook
   // we re-assign the id to the thoughtId?
   const { id: thoughtId } = useParams();
+
+
   
   const { loading, data } = useQuery(QUERY_THOUGHT, {
     // variable needs to match the query variable that is used
@@ -37,6 +41,7 @@ const SingleThought = props => {
       </div>
 
       {thought.reactionCount > 0 && <ReactionList reactions={thought.reactions} />}
+      {Auth.loggedIn() && <ReactionForm thoughtId={thought._id} />}
     </div>
   );
 };

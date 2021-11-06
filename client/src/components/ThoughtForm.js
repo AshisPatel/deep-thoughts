@@ -7,7 +7,7 @@ const ThoughtForm = () => {
 
     const [thoughtText, setText] = useState('');
     const [characterCount, setCharacterCount] = useState(0);
-
+    // Updating the cache is neccesarry here because the ADD_THOUGHT mutation returns the thought that is added, not the entire thoughts array. Thus, we have to update the cache's thoughts array 
     const [addThought, { error }] = useMutation(ADD_THOUGHT, {
         // this update method forces all of our QUERY_THOUGHTS queries to have their cache's updated
         // We need to do this because our addThought is adding a new value to the cache'd version of the QUERY_THOUGHTS query
