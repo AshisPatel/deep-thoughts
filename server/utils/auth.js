@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken');
 
 // Ask about this in office hours?
 require("dotenv").config();
-const secret= process.env.SECRET;
-// console.log(secret);
+const secret = process.env.SECRET;
+// console.log(`Testing for the secret identification: ${secret}`);
 
 const expiration = "2h";
 
