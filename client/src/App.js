@@ -33,8 +33,11 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path ="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
-              {/* the ? at the end of the parameter means that this parameter is optional */}
-              <Route path="/profile/:username?" element={<Profile />} />
+              {/* We need to use nested routes here as optional paramteres are no longer supported in v6 */}
+              <Route path="/profile">
+                <Route path=":username" element={<Profile />} />
+                <Route Path="" element={<Profile />} />
+              </Route>
               <Route path="/thought/:id" element={<SingleThought />} />
 
               <Route path="*" element={<NoMatch />} />
