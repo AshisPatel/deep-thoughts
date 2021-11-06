@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams , Navigate } from "react-router-dom";
 import ThoughtList from "../components/ThoughtList";
 import FriendList from "../components/FriendList";
+import ThoughtForm from "../components/ThoughtForm";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_USER, QUERY_ME } from "../utils/queries";
 import { ADD_FRIEND } from "../utils/mutations";
@@ -57,7 +58,7 @@ const Profile = () => {
         <h2 className="bg-dark text-secondary p-3 display-inline-block">
           Viewing {userParam ? `${user.username}'s` : 'your'} profile. 
         </h2>
-        
+
         {userParam && (
           <button className="btn ml-auto" onClick={handleClick}>
           Add Friend
@@ -75,6 +76,7 @@ const Profile = () => {
           <FriendList friendCount={user.friendCount} username={user.username} friends={user.friends} />
         </div>
       </div>
+      <div className="mb-3">{!userParam && <ThoughtForm />}</div>
     </div>
   );
 };
