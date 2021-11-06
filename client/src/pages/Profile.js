@@ -1,19 +1,29 @@
 import React from 'react';
-import { useParams } from "react-router-dom";
+import { useParams , Navigate } from "react-router-dom";
 import ThoughtList from "../components/ThoughtList";
 import FriendList from "../components/FriendList";
 import { useQuery } from "@apollo/client";
-import { QUERY_USER } from "../utils/queries";
+import { QUERY_USER, QUERY_ME } from "../utils/queries";
+import Auth from "../utils/auth";
 
 const Profile = () => {
 
   const { username: userParam } = useParams();
-
-  const { loading, data } = useQuery(QUERY_USER, {
+  // if the user clicks on the "my profile" link in the navbar, the route will not have any username in it
+  // This causes :username parameter to be blank, and thus we will instead use QUERY_ME instead of QUERY_USER
+  const { loading, data } = useQuery(userParam ? QUERY_USER : QUERY_ME , {
     variables: { username: userParam }
   });
 
-  const user = data?.user || {};
+  // redirect to personal profile page if the user clicks on the profile link on a post that was made by them
+  if(Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
+    return <Navigate to="/profile"/>;
+  }
+
+  // Checks to see if we need to query info for the user logged in (me), another user, or be blank due to data not loaded yet. 
+  const user = data?.me || data?.user || {};
+
+  console.log(user);
 
   if(loading) {
     return <div>Loading...</div>

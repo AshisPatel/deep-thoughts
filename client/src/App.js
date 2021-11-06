@@ -9,8 +9,9 @@ import NoMatch from './pages/NoMatch';
 import SingleThought from './pages/SingleThought';
 import Profile from './pages/Profile';
 import Signup from './pages/Signup';
-
 import Home from './pages/Home';
+
+
 
 // create the link to the graphql server at it's endpoint in our server-side code
 const httpLink = createHttpLink({
@@ -48,7 +49,7 @@ function App() {
               {/* We need to use nested routes here as optional paramteres are no longer supported in v6 */}
               <Route path="/profile">
                 <Route path=":username" element={<Profile />} />
-                <Route Path="" element={<Profile />} />
+                <Route path="" element={<Profile />} />
               </Route>
               <Route path="/thought/:id" element={<SingleThought />} />
 
