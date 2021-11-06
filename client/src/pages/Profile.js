@@ -20,10 +20,17 @@ const Profile = () => {
     return <Navigate to="/profile"/>;
   }
 
-  // Checks to see if we need to query info for the user logged in (me), another user, or be blank due to data not loaded yet. 
+  // Checks to see if we need to query info for the user logged in (me), another user, or be blank
   const user = data?.me || data?.user || {};
 
-  console.log(user);
+  // checks to see if the user tries to route to their own profile while not being signed in (token does not exist, or has expired)
+  if(!user?.username) {
+    return (
+      <h4>
+        You need to be logged in to see this page. Use navigation links to return to the homepage, sign up, or log in!
+      </h4>
+    )
+  }
 
   if(loading) {
     return <div>Loading...</div>
@@ -33,7 +40,7 @@ const Profile = () => {
     <div>
       <div className="flex-row mb-3">
         <h2 className="bg-dark text-secondary p-3 display-inline-block">
-          Viewing {user.username}'s profile'.
+          Viewing {userParam ? `${user.username}'s` : 'your'} profile. 
         </h2>
       </div>
 
