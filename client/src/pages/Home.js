@@ -21,7 +21,6 @@ const Home = () => {
   // use optional chaining to check to immediately access the data.thoughts object if it exists, else it the data does not exist it will be an empty array (so this occurs while loading)
 
   const thoughts = data?.thoughts || [];
-  console.log(thoughts);
 
   return (
     <main>
