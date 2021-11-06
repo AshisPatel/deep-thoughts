@@ -2,13 +2,28 @@ import React from 'react';
 import { useParams , Navigate } from "react-router-dom";
 import ThoughtList from "../components/ThoughtList";
 import FriendList from "../components/FriendList";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_USER, QUERY_ME } from "../utils/queries";
+import { ADD_FRIEND } from "../utils/mutations";
 import Auth from "../utils/auth";
 
 const Profile = () => {
 
   const { username: userParam } = useParams();
+  const [addFriend] = useMutation(ADD_FRIEND);
+
+  const handleClick = async () => {
+    // Recall that we will be clicking the 'add friend' button on the user's profile, thus meaning we want to add THAT user to our friend's list.
+    // Therefore, we will have access to the user's info when the component is created. 
+    // Thus, we can acess the id that we need as user._id
+    try {
+      await addFriend({
+        variables: {id: user._id}
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
   // if the user clicks on the "my profile" link in the navbar, the route will not have any username in it
   // This causes :username parameter to be blank, and thus we will instead use QUERY_ME instead of QUERY_USER
   const { loading, data } = useQuery(userParam ? QUERY_USER : QUERY_ME , {
@@ -42,6 +57,13 @@ const Profile = () => {
         <h2 className="bg-dark text-secondary p-3 display-inline-block">
           Viewing {userParam ? `${user.username}'s` : 'your'} profile. 
         </h2>
+        
+        {userParam && (
+          <button className="btn ml-auto" onClick={handleClick}>
+          Add Friend
+        </button>
+        )}
+        
       </div>
 
       <div className="flex-row justify-space-between mb-3">
